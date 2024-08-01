@@ -1,18 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { TestLayout } from './pages';
+import { HomeLayout, Landing, BrowsePets } from './pages';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <TestLayout />,
+        element: <HomeLayout />,
         children: [
-            // {
-            //     index: true,
-            //     element: <Test />,
-            // },
-            // {
-            //     path: 'browse-pets',
-            //     element: <Bar />,
-            // },
+            {
+                index: true,
+                element: <Landing />,
+            },
+            {
+                path: 'browse-pets',
+                element: <BrowsePets />,
+            },
             // {
             //     path: 'find-pet',
             //     element: <Bar />,
