@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 function NavLinks() {
     return (
-        <nav className="flex flex-col gap-y-6 mt-5 text-slate-600">
+        <div className="flex flex-col gap-y-6 mt-5 text-slate-700">
             {links.map(({ id, text, url, icon }) => {
                 return (
                     <NavLink
@@ -11,8 +11,8 @@ function NavLinks() {
                         key={id}
                         className={({ isActive }) => {
                             return isActive
-                                ? 'text-black translate-x-2 flex gap-x-5'
-                                : 'hover:translate-x-2 transition-transform duration-300 flex gap-x-5';
+                                ? 'px-4 text-black translate-x-4 flex gap-x-5'
+                                : 'px-4 hover:translate-x-2 transition-transform duration-300 flex gap-x-5';
                         }}
                     >
                         <span>{icon}</span>
@@ -20,7 +20,7 @@ function NavLinks() {
                     </NavLink>
                 );
             })}
-        </nav>
+        </div>
     );
 }
 
