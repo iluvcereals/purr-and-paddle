@@ -1,18 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const defaultState = {
-    name: 'chad',
+const initialState = {
+    type: '',
+    breed: '',
+    age: 'any',
+    ageOpts: ['puppy/kitten', 'young', 'adult', 'senior', 'any'],
+    gender: 'any',
+    genderOpts: ['boy', 'girl'],
+    compatibility: 'all',
+    compatibilityOpts: ['dog', 'cat', 'children'],
 };
 
 const adoptionSlice = createSlice({
     name: 'adoption',
-    initialState: defaultState,
+    initialState: initialState,
     reducers: {
-        changeName: (state) => {
-            state.name = 'Not Chad';
+        clearState: () => {
+            return { ...initialState };
         },
     },
 });
 
-export const { changeName } = adoptionSlice.actions;
+export const { clearState } = adoptionSlice.actions;
 export default adoptionSlice.reducer;

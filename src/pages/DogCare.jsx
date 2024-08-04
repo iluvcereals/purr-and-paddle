@@ -1,4 +1,4 @@
-function Landing() {
+function DogCare() {
     return (
         <div className="flex items-center justify-center h-full bg-slate-100">
             <div className="text-center">
@@ -10,4 +10,4 @@ function Landing() {
     );
 }
 
-export default Landing;
+export default DogCare;

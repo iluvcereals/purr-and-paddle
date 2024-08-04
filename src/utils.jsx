@@ -10,6 +10,6 @@ export const links = [
     { id: 3, text: 'Find a Pet', url: '/find-pet', icon: <MdPets /> },
     { id: 4, text: 'Dog Care', url: '/dog-care', icon: <FaDog /> },
     { id: 5, text: 'Cat Care', url: '/cat-care', icon: <FaCat /> },
-    { id: 6, text: 'Give Away', url: '/give-away', icon: <ImHeartBroken /> },
+    { id: 6, text: 'Give Away', url: '/give-pet', icon: <ImHeartBroken /> },
     { id: 7, text: 'Contact Us', url: '/contact', icon: <ImPhoneHangUp /> },
 ];
