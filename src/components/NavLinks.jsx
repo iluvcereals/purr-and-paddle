@@ -1,10 +1,15 @@
 import { links } from '../utils';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function NavLinks() {
+    const user = useSelector((store) => store.userState.username);
     return (
         <div className="flex flex-col gap-y-6 mt-5 text-slate-700">
             {links.map(({ id, text, url, icon }) => {
+                if ((user && text === 'Signup') || (user && text === 'Login')) {
+                    return null;
+                }
                 return (
                     <NavLink
                         to={url}

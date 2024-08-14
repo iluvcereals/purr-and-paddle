@@ -6,3 +6,5 @@ export { default as GivePet } from './GivePet';
 export { default as DogCare } from './DogCare';
 export { default as CatCare } from './CatCare';
 export { default as ContactPage } from './ContactPage';
+export { default as Login } from './Login';
+export { default as Register } from './Register';

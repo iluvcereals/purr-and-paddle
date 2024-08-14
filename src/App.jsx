@@ -1,7 +1,26 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomeLayout, Landing, BrowsePets, FindPet, DogCare, CatCare, GivePet, ContactPage } from './pages';
+import {
+    HomeLayout,
+    Landing,
+    BrowsePets,
+    FindPet,
+    DogCare,
+    CatCare,
+    GivePet,
+    ContactPage,
+    Login,
+    Register,
+} from './pages';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { store } from './store.js';
+
+// Loaders
+import { loader as givePetLoader } from './pages/GivePet';
+
+// Action
+import { action as loginAction } from './pages/Login.jsx';
+import { action as registerAction } from './pages/Register.jsx';
 
 const router = createBrowserRouter([
     {
@@ -31,6 +50,7 @@ const router = createBrowserRouter([
             {
                 path: 'give-pet',
                 element: <GivePet />,
+                loader: givePetLoader(store),
             },
             {
                 path: 'contact',
@@ -38,6 +58,8 @@ const router = createBrowserRouter([
             },
         ],
     },
+    { path: '/login', element: <Login />, action: loginAction(store) },
+    { path: '/signup', element: <Register />, action: registerAction },
 ]);
 
 function App() {

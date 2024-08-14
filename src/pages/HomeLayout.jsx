@@ -1,15 +1,27 @@
 import { NavLinks, DateAndTime } from '../components';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../features/userSlice';
+import { toast } from 'react-toastify';
 
 function HomeLayout() {
+    const username = useSelector((store) => store.userState.username);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
+        toast.success('Logged out successfully');
+        navigate('/');
+    };
     return (
         <div className="flex flex-col h-screen">
-            <section className="flex-1 flex">
-                <nav className="w-[13rem] bg-slate-100">
+            <section className="flex flex-1">
+                <nav className="hidden md:block w-[13rem] bg-slate-100">
                     <div className="h-20 p-4 flex justify-center items-center">
                         <Link to="/" className="border-b border-black w-full p-4 flex justify-center items-center">
-                            <h1 className="tracking-tight  text-sm ">purr & paddle</h1>
+                            <h1 className="tracking-tight text-sm font-bold">purr & paddle</h1>
                             <img src={logo} alt="logo" className="h-12 w-12 " />
                         </Link>
                     </div>
@@ -28,6 +40,16 @@ function HomeLayout() {
                             </button>
                         </div>
                         <DateAndTime />
+                        <div>
+                            {username && (
+                                <button
+                                    onClick={handleLogout}
+                                    className="h-8 bg-black text-white rounded-md px-4 border border-black hover:bg-gray-700 transition duration-300"
+                                >
+                                    Logout
+                                </button>
+                            )}
+                        </div>
                     </header>
                     <section className="flex-1 p-12 border-l border-black min-h-screen">
                         <Outlet />

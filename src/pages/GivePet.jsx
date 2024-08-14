@@ -1,37 +1,32 @@
+import { customFetch } from '../customUrl';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FormInput, FormSelect } from '../components';
 import { clearState } from '../features/giveAwaySlice';
+import { redirect } from 'react-router-dom';
 
+export const loader = (store) => () => {
+    const user = store.getState().userState.username;
+    if (!user) {
+        toast.error('Please login');
+        return redirect('/login');
+    }
+    return null;
+};
 const initialState = {
-    type: '',
-    breed: '',
-    age: '0-6 months',
-    gender: 'boy',
-    catCompatibility: 'not sure',
-    dogCompatibility: 'not sure',
-    childCompatibility: 'not sure',
+    type: 'dog',
+    breed: 'Labrador Retriever',
+    age: 'young',
+    gender: 'male',
+    compatibility: 'dog',
     ownerName: '',
     ownerEmail: '',
-    petDescription: '',
+    description: '',
 };
 function GivePet() {
-    const {
-        type,
-        breed,
-        age,
-        gender,
-        catCompatibility,
-        dogCompatibility,
-        childCompatibility,
-        ownerName,
-        petDescription,
-        ageOpts,
-        genderOpts,
-        compatibilityOpts,
-    } = useSelector((store) => store.giveAwayState);
-
+    const { typeOpts, breedOpts, ageOpts, genderOpts, compatibilityOpts } = useSelector((store) => store.giveAwayState);
+    const { username } = useSelector((store) => store.userState);
     const dispatch = useDispatch();
     const [petDetails, setPetDetails] = useState(initialState);
 
@@ -48,14 +43,16 @@ function GivePet() {
         return emailRegex.test(email);
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+        console.log(petDetails);
         if (
             !petDetails.type ||
             !petDetails.breed ||
+            !petDetails.compatibility ||
             !petDetails.ownerName ||
             !petDetails.ownerEmail ||
-            !petDetails.petDescription
+            !petDetails.description
         ) {
             toast.error('Please fill out all fields');
             return;
@@ -66,8 +63,15 @@ function GivePet() {
             return;
         }
 
-        // TODO: Handle submission in the store
-        console.log(petDetails);
+        try {
+            const response = await customFetch.post('/app/add-pet', petDetails);
+            toast.success(response.data.msg);
+            dispatch(clearState());
+            setPetDetails({ ...initialState });
+        } catch (error) {
+            console.error('Error adding pet:', error);
+            toast.error('Failed to add pet. Please try again.');
+        }
     }
 
     function handleClear() {
@@ -85,11 +89,9 @@ function GivePet() {
                     <h1 className="font-bold text-4xl mb-1">Rehoming Made Easy </h1>
                     <p className="text-gray-500">Rehome your pet today.</p>
                 </header>
-                <div>
-                    <FormInput type="text" name="type" value={petDetails.type} handleChange={handleChange} />
-                    <FormInput type="text" name="breed" value={petDetails.breed} handleChange={handleChange} />
-                </div>
                 <div className="grid grid-cols-2 gap-x-4">
+                    <FormSelect name="type" options={typeOpts} value={petDetails.type} handleChange={handleChange} />
+                    <FormSelect name="breed" options={breedOpts} value={petDetails.breed} handleChange={handleChange} />
                     <FormSelect name="age" options={ageOpts} value={petDetails.age} handleChange={handleChange} />
                     <FormSelect
                         name="gender"
@@ -98,24 +100,10 @@ function GivePet() {
                         handleChange={handleChange}
                     />
                     <FormSelect
-                        label="gets along with other cats"
-                        name="catCompatibility"
+                        label="compatibility"
+                        name="compatibility"
                         options={compatibilityOpts}
-                        value={petDetails.catCompatibility}
-                        handleChange={handleChange}
-                    />
-                    <FormSelect
-                        label="gets along with other dogs"
-                        name="dogCompatibility"
-                        options={compatibilityOpts}
-                        value={petDetails.dogCompatibility}
-                        handleChange={handleChange}
-                    />
-                    <FormSelect
-                        label="suitable for families with small children"
-                        name="childCompatibility"
-                        options={compatibilityOpts}
-                        value={petDetails.childCompatibility}
+                        value={petDetails.compatibility}
                         handleChange={handleChange}
                     />
                 </div>
@@ -142,8 +130,8 @@ function GivePet() {
                     <textarea
                         rows="2"
                         cols="20"
-                        name="petDescription"
-                        value={petDetails.petDescription}
+                        name="description"
+                        value={petDetails.description}
                         onChange={handleChange}
                         className="border border-black h-16 w-full rounded-md outline-none p-2"
                     />

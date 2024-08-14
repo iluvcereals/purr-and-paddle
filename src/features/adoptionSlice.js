@@ -1,14 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    type: '',
-    breed: '',
-    age: 'any',
-    ageOpts: ['puppy/kitten', 'young', 'adult', 'senior', 'any'],
-    gender: 'any',
-    genderOpts: ['boy', 'girl'],
-    compatibility: 'all',
-    compatibilityOpts: ['dog', 'cat', 'children'],
+    availablePets: [],
+    typeOpts: ['dog', 'cat'],
+    breedOpts: [
+        'Labrador Retriever',
+        'German Shepherd',
+        'Siamese',
+        'Persian',
+        'Golden Retriever',
+        'Maine Coon',
+        'Beagle',
+        'Ragdoll',
+        'Bulldog',
+        'British Shorthair',
+    ],
+    ageOpts: ['puppy/kitten', 'young', 'adult', 'senior'],
+    genderOpts: ['male', 'female'],
+    compatibilityOpts: ['dogs', 'cats', 'children'],
+    isClear: true,
 };
 
 const adoptionSlice = createSlice({
@@ -18,8 +28,12 @@ const adoptionSlice = createSlice({
         clearState: () => {
             return { ...initialState };
         },
+        setAvailablePets: (state, action) => {
+            state.availablePets = action.payload;
+            state.clear = false;
+        },
     },
 });
 
-export const { clearState } = adoptionSlice.actions;
+export const { clearState, setAvailablePets } = adoptionSlice.actions;
 export default adoptionSlice.reducer;
